@@ -119,6 +119,14 @@ module Shoulda
           end
         end
 
+        def parent_of(mod)
+          if mod.respond_to?(:module_parent)
+            mod.module_parent
+          else
+            mod.parent
+          end
+        end
+
         private
 
         def simply_generate_validation_message(
