@@ -106,7 +106,6 @@ appraise 'rails_6_0' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 6.0.0.beta3'
-  gem 'sqlite3', '~> 1.3', '>= 1.3.6'
   gem 'puma', '~> 3.11'
   gem 'bootsnap', '>= 1.4.1', require: false
   gem 'sass-rails', '~> 5.0'
