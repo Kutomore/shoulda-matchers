@@ -242,7 +242,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pygments.rb
-  rails (~> 4.2.10)
+  rails (~> 4.2.11.1)
   rake (= 12.3.2)
   redcarpet
   rspec (~> 3.6)
