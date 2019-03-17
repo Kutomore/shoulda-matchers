@@ -41,10 +41,10 @@ module AcceptanceTests
       run_command_isolated_from_bundle(*args) do |runner|
         bundler_version = `bundle -v`.sub(/Bundler version /, '')
 
-        if bundler_version !~ /^1\./
-          puts 'Installing Bundler 1.x...'
-          system('gem', 'install', 'bundler', '-v', '~> 1')
-        end
+        # if bundler_version !~ /^1\./
+          # puts 'Installing Bundler 1.x...'
+          # system('gem', 'install', 'bundler', '-v', '~> 1')
+        # end
 
         runner.command_prefix = 'bundle exec'
         runner.env['BUNDLE_GEMFILE'] = fs.find_in_project('Gemfile').to_s
