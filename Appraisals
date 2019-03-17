@@ -35,7 +35,7 @@ shared_dependencies = proc do
   instance_eval(&shared_test_dependencies)
 end
 
-appraise '4.2' do
+appraise 'rails_4_2' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 4.2.10'
@@ -54,7 +54,7 @@ appraise '4.2' do
   gem 'protected_attributes', '~> 1.0.6'
 end
 
-appraise '5.0' do
+appraise 'rails_5_0' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 5.0.7'
@@ -69,7 +69,7 @@ appraise '5.0' do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-appraise '5.1' do
+appraise 'rails_5_1' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 5.1.6'
@@ -85,8 +85,7 @@ appraise '5.1' do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-
-appraise '5.2' do
+appraise 'rails_5_2' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 5.2.2'
@@ -102,4 +101,24 @@ appraise '5.2' do
   gem 'chromedriver-helper'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+appraise 'rails_6_0' do
+  instance_eval(&shared_dependencies)
+
+  gem 'rails', '~> 6.0.0.beta3'
+  gem 'sqlite3', '~> 1.3', '>= 1.3.6'
+  gem 'rails-controller-testing', '>= 1.0.1'
+  gem 'puma', '~> 3.11'
+  gem 'bootsnap', '>= 1.4.1', require: false
+  gem 'sass-rails', '~> 5.0'
+  gem 'webpacker', '>= 4.0.0.rc3'
+  gem 'turbolinks', '~> 5'
+  gem 'jbuilder', '~> 2.5'
+  gem 'bcrypt', '~> 3.1.7'
+  gem 'capybara', '>= 2.15'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
 end
