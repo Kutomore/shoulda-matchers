@@ -147,17 +147,17 @@ module Shoulda
         private
 
         def secure_password_being_validated?
-          if defined?(::ActiveModel::SecurePassword::InstanceMethodsOnActivation)
-            return false unless @subject.class.ancestors.include?(::ActiveModel::SecurePassword::InstanceMethodsOnActivation)
-
-            @attribute == :password
+          if secure_password_module
+            @attribute == :password &&
+              @subject.class.ancestors.include?(secure_password_module)
           else
-            auth_attr = @subject.class.instance_methods.find {|meth| meth.to_s =~ /authenticate_[\w_]+/ }
-
-            return false unless auth_attr
-
-            @attribute = auth_attr.delete('authenticate_')
+            subject.respond_to?("authenticate_#{@attribute}")
           end
+        end
+
+        def secure_password_module
+          ::ActiveModel::SecurePassword::InstanceMethodsOnActivation
+        rescue NameError
         end
 
         def possibly_ignore_interference_by_writer
