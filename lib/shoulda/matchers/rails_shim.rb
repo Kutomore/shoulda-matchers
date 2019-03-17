@@ -139,7 +139,7 @@ module Shoulda
         def digestible_attributes_in(record)
           record.methods.inject([]) do |array, method_name|
             match = method_name.to_s.match(
-              /\A([\w_]+)_(?:confirmation|digest)\Z/,
+              /\A([\w_]+)_(?:confirmation|digest)=\Z/,
             )
 
             if match
