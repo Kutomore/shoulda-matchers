@@ -13,8 +13,8 @@ env:
   - DATABASE_ADAPTER=postgresql
 
 rvm:
-  - 2.6.0
-  - 2.5.1
+  - 2.6.2
+  - 2.5.5
   - 2.4.4
   - 2.3.7
 
