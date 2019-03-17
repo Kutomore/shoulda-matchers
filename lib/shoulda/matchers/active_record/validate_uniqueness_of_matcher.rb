@@ -540,16 +540,21 @@ module Shoulda
           @given_record.tap do |existing_record|
             ensure_secure_password_set(existing_record)
             existing_record.save(validate: false)
+
+            if !existing_record.persisted?
+              raise "Existing record could not be persisted"
+            end
           end
         rescue ::ActiveRecord::StatementInvalid => error
           raise ExistingRecordInvalid.create(underlying_exception: error)
         end
 
         def ensure_secure_password_set(instance)
-          if has_secure_password?
-            instance.send("#{@secure_attribute}=", "password")
-            instance.send("#{@secure_attribute_confirmation}=", "password")
-          end
+          Shoulda::Matchers::RailsShim.digestible_attributes_in(instance).
+            each do |attribute|
+              instance.send("#{attribute}=", 'password')
+              instance.send("#{attribute}_confirmation=", 'password')
+            end
         end
 
         def update_existing_record!(value)
@@ -576,19 +581,7 @@ module Shoulda
         end
 
         def has_secure_password?
-          if defined?(::ActiveModel::SecurePassword::InstanceMethodsOnActivation)
-            return false unless model.ancestors.include?(
-              ::ActiveModel::SecurePassword::InstanceMethodsOnActivation
-            )
-
-            @secure_attribute = :password
-          else
-            auth_attr = model.class.instance_methods.find {|meth| meth.to_s =~ /authenticate_[\w_]+/ }
-
-            return false unless auth_attr
-
-            @secure_attribute = auth_attr.delete('authenticate_')
-          end
+          Shoulda::Matchers::RailsShim.has_secure_password?(subject, @attribute)
         end
 
         def build_new_record

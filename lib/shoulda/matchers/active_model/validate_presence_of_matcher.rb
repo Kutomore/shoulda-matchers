@@ -147,17 +147,8 @@ module Shoulda
         private
 
         def secure_password_being_validated?
-          if secure_password_module
-            @attribute == :password &&
-              @subject.class.ancestors.include?(secure_password_module)
-          else
-            subject.respond_to?("authenticate_#{@attribute}")
-          end
-        end
-
-        def secure_password_module
-          ::ActiveModel::SecurePassword::InstanceMethodsOnActivation
-        rescue NameError
+          Shoulda::Matchers::RailsShim.digestible_attributes_in(@subject).
+            include?(@attribute)
         end
 
         def possibly_ignore_interference_by_writer
