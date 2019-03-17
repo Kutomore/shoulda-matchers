@@ -12,7 +12,7 @@ shared_jruby_dependencies = proc do
 end
 
 shared_rails_dependencies = proc do
-  gem 'sqlite3', '~> 1.3', '>= 1.3.6', platform: :ruby
+  gem 'sqlite3', '~> 1.3.6', platform: :ruby
   gem 'pg', platform: :ruby
 end
 
@@ -106,7 +106,7 @@ appraise 'rails_6_0' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 6.0.0.beta3'
-  gem 'rails-controller-testing', '>= 1.0.1'
+  gem 'sqlite3', '~> 1.3', '>= 1.3.6'
   gem 'puma', '~> 3.11'
   gem 'bootsnap', '>= 1.4.1', require: false
   gem 'sass-rails', '~> 5.0'
@@ -119,4 +119,5 @@ appraise 'rails_6_0' do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'rails-controller-testing', '>= 1.0.1'
 end

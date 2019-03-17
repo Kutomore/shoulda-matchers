@@ -78,13 +78,34 @@ module UnitTests
       remove_bootsnap
       write_database_configuration
 
-      if bundle.version_of("rails") >= 5
+      if rails_version >= 5
         add_initializer_for_time_zone_aware_types
       end
     end
 
     def rails_new
-      run_command! %W(rails new #{fs.project_directory} --skip-bundle --no-rc)
+      run_command!(*rails_new_command)
+    end
+
+    def rails_new_command
+      if rails_version > 5
+        [
+          'rails',
+          'new',
+          fs.project_directory.to_s,
+          '--skip-bundle',
+          '--no-rc',
+          '--skip-webpack-install',
+        ]
+      else
+        [
+          'rails',
+          'new',
+          fs.project_directory.to_s,
+          '--skip-bundle',
+          '--no-rc',
+        ]
+      end
     end
 
     def fix_available_locales_warning
@@ -146,6 +167,10 @@ end
 
     def run_command!(*args)
       Tests::CommandRunner.run!(*args)
+    end
+
+    def rails_version
+      bundle.version_of('rails')
     end
   end
 end
