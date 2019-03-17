@@ -12,7 +12,7 @@ shared_jruby_dependencies = proc do
 end
 
 shared_rails_dependencies = proc do
-  gem 'sqlite3', platform: :ruby
+  gem 'sqlite3', '~> 1.3', '>= 1.3.6', platform: :ruby
   gem 'pg', platform: :ruby
 end
 
@@ -23,7 +23,6 @@ end
 
 shared_test_dependencies = proc do
   gem 'minitest-reporters'
-  # gem 'nokogiri', '~> 1.8'
   gem 'rspec-rails', '~> 3.6'
   gem 'shoulda-context', '~> 1.2.0'
 end
@@ -107,7 +106,6 @@ appraise 'rails_6_0' do
   instance_eval(&shared_dependencies)
 
   gem 'rails', '~> 6.0.0.beta3'
-  gem 'sqlite3', '~> 1.3', '>= 1.3.6'
   gem 'rails-controller-testing', '>= 1.0.1'
   gem 'puma', '~> 3.11'
   gem 'bootsnap', '>= 1.4.1', require: false
