@@ -34,6 +34,7 @@ module UnitTests
         RUBY
 
         namespace.const_get(name_without_namespace).tap do |constant|
+          constant.unloadable
           @_defined_modules = defined_modules | [constant]
 
           if block
@@ -54,6 +55,7 @@ module UnitTests
         RUBY
 
         namespace.const_get(name_without_namespace).tap do |constant|
+          constant.unloadable
           @_defined_modules = defined_modules | [constant]
 
           if block
@@ -77,6 +79,7 @@ module UnitTests
 
       def remove_defined_modules
         defined_modules.reverse_each { |mod| remove_defined_module(mod.name) }
+        ActiveSupport::Dependencies.clear
       end
 
       def remove_defined_module(module_name)
