@@ -7,6 +7,7 @@ before_install:
   - gem update --system '2.7.8' --no-document
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
   - gem install bundler -v '< 2' --conservative --no-document
+  - bundle config
 install: "bundle install --jobs=3 --retry=3"
 
 env:
@@ -15,7 +16,7 @@ env:
 
 rvm:
   - 2.6.2
-  - 2.5.5
+  - 2.5.4
   - 2.4.4
   - 2.3.7
 
@@ -30,3 +31,7 @@ matrix:
   exclude:
     - rvm: 2.6.2
       gemfile: gemfiles/rails_4_2.gemfile
+    - rvm: 2.4.4
+      gemfile: gemfiles/rails_6_0.gemfile
+    - rvm: 2.3.7
+      gemfile: gemfiles/rails_6_0.gemfile
