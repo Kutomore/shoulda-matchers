@@ -6,8 +6,9 @@ script: "bundle exec rake"
 before_install:
   - gem update --system '2.7.8' --no-document
   - bundle --version
-  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-  - gem install bundler -v '< 2' --conservative --no-document
+  - gem uninstall bundler -ax
+  - gem install bundler -v '< 2' --no-document
+  - bundle --version
 install: "bundle install --jobs=3 --retry=3"
 
 env:
