@@ -18,18 +18,15 @@ module UnitTests
       end
 
       def reset
-        remove_defined_classes
+        remove_defined_modules
+        defined_modules.clear
       end
 
       def define_module(module_name, &block)
         module_name = module_name.to_s.camelize
+        namespace, name_without_namespace = parse_constant_name(module_name)
 
-        namespace, name_without_namespace =
-          ClassBuilder.parse_constant_name(module_name)
-
-        if namespace.const_defined?(name_without_namespace, false)
-          namespace.__send__(:remove_const, name_without_namespace)
-        end
+        remove_defined_module(module_name)
 
         eval <<-RUBY
           module #{namespace}::#{name_without_namespace}
@@ -37,7 +34,7 @@ module UnitTests
         RUBY
 
         namespace.const_get(name_without_namespace).tap do |constant|
-          constant.unloadable
+          @_defined_modules = defined_modules | [constant]
 
           if block
             constant.module_eval(&block)
@@ -47,13 +44,9 @@ module UnitTests
 
       def define_class(class_name, parent_class = Object, &block)
         class_name = class_name.to_s.camelize
+        namespace, name_without_namespace = parse_constant_name(class_name)
 
-        namespace, name_without_namespace =
-          ClassBuilder.parse_constant_name(class_name)
-
-        if namespace.const_defined?(name_without_namespace, false)
-          namespace.__send__(:remove_const, name_without_namespace)
-        end
+        remove_defined_module(class_name)
 
         eval <<-RUBY
           class #{namespace}::#{name_without_namespace} < ::#{parent_class}
@@ -61,7 +54,7 @@ module UnitTests
         RUBY
 
         namespace.const_get(name_without_namespace).tap do |constant|
-          constant.unloadable
+          @_defined_modules = defined_modules | [constant]
 
           if block
             if block.arity == 0
@@ -82,8 +75,20 @@ module UnitTests
 
       private
 
-      def remove_defined_classes
-        ::ActiveSupport::Dependencies.clear
+      def remove_defined_modules
+        defined_modules.reverse_each { |mod| remove_defined_module(mod.name) }
+      end
+
+      def remove_defined_module(module_name)
+        namespace, name_without_namespace = parse_constant_name(module_name)
+
+        if namespace.const_defined?(name_without_namespace, false)
+          namespace.__send__(:remove_const, name_without_namespace)
+        end
+      end
+
+      def defined_modules
+        @_defined_modules ||= []
       end
     end
   end
